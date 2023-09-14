@@ -39,7 +39,7 @@ namespace GeographicLib {
       AuxAngle mu1(base::Rectifying(phi1, &d));
       real tphi1 = phi1.tan(), tmu1 = mu1.tan();
       return
-        isfinite(tphi1) ? d * Math::sq(base::sc(tphi1)/base::sc(tmu1)) : 1/d;
+        isfinite(tphi1) ? d * Math::_sq(base::sc(tphi1)/base::sc(tmu1)) : 1/d;
     } else if (x * y < 0)
       return (base::Rectifying(phi2).radians() -
               base::Rectifying(phi1).radians()) / (y - x);
@@ -169,7 +169,7 @@ namespace GeographicLib {
       return (h(y) - h(x)) / (y - x); // Does not include x = y = 0
     real scx = base::sc(x), scy = base::sc(y);
     return ((x + y) / (2 * d)) *
-      (Math::sq(sx*sy) + Math::sq(sy/scx) + Math::sq(sx/scy));
+      (Math::_sq(sx*sy) + Math::_sq(sy/scx) + Math::_sq(sx/scy));
   }
   Math::real DAuxLatitude::Datanhee(real x, real y) const {
     // atan(e*sn(tphi))/e:

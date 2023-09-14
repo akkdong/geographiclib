@@ -127,20 +127,20 @@ namespace GeographicLib {
   }
 
   Math::real Ellipsoid::MeridionalCurvatureRadius(real phi) const {
-    real v = 1 - _e2 * Math::sq(Math::sind(Math::LatFix(phi)));
+    real v = 1 - _e2 * Math::_sq(Math::sind(Math::LatFix(phi)));
     return _a * (1 - _e2) / (v * sqrt(v));
   }
 
   Math::real Ellipsoid::TransverseCurvatureRadius(real phi) const {
-    real v = 1 - _e2 * Math::sq(Math::sind(Math::LatFix(phi)));
+    real v = 1 - _e2 * Math::_sq(Math::sind(Math::LatFix(phi)));
     return _a / sqrt(v);
   }
 
   Math::real Ellipsoid::NormalCurvatureRadius(real phi, real azi) const {
     real calp, salp,
-      v = 1 - _e2 * Math::sq(Math::sind(Math::LatFix(phi)));
+      v = 1 - _e2 * Math::_sq(Math::sind(Math::LatFix(phi)));
     Math::sincosd(azi, salp, calp);
-    return _a / (sqrt(v) * (Math::sq(calp) * v / (1 - _e2) + Math::sq(salp)));
+    return _a / (sqrt(v) * (Math::_sq(calp) * v / (1 - _e2) + Math::_sq(salp)));
   }
 
 } // namespace GeographicLib

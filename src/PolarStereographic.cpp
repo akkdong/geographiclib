@@ -76,7 +76,7 @@ namespace GeographicLib {
     rho = taup >= 0 ? (lat != Math::qd ? 1/rho : 0) : rho;
     rho *= 2 * _k0 * _a / _c;
     k = lat != Math::qd ?
-      (rho / _a) * secphi * sqrt(_e2m + _e2 / Math::sq(secphi)) : _k0;
+      (rho / _a) * secphi * sqrt(_e2m + _e2 / Math::_sq(secphi)) : _k0;
     Math::sincosd(lon, x, y);
     x *= rho;
     y *= (northp ? -rho : rho);
@@ -89,11 +89,11 @@ namespace GeographicLib {
     real
       rho = hypot(x, y),
       t = rho != 0 ? rho / (2 * _k0 * _a / _c) :
-      Math::sq(numeric_limits<real>::epsilon()),
+      Math::_sq(numeric_limits<real>::epsilon()),
       taup = (1 / t - t) / 2,
       tau = Math::tauf(taup, _es),
       secphi = hypot(real(1), tau);
-    k = rho != 0 ? (rho / _a) * secphi * sqrt(_e2m + _e2 / Math::sq(secphi)) :
+    k = rho != 0 ? (rho / _a) * secphi * sqrt(_e2m + _e2 / Math::_sq(secphi)) :
       _k0;
     lat = (northp ? 1 : -1) * Math::atand(tau);
     lon = Math::atan2d(x, northp ? -y : y );

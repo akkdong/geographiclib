@@ -98,7 +98,7 @@ namespace GeographicLib {
                _correction.Coefficients().mmx());
     // Adjust the normalization of the normal potential to match the model.
     real mult = _earth._gGM / _gGMmodel;
-    real amult = Math::sq(_earth._a / _amodel);
+    real amult = Math::_sq(_earth._a / _amodel);
     // The 0th term in _zonal should be is 1 + _dzonal0.  Instead set it to 1
     // to give exact cancellation with the (0,0) term in the model and account
     // for _dzonal0 separately.

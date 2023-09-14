@@ -167,9 +167,9 @@ namespace GeographicLib {
       u = r != 0 ? fmax(p / r, eps()) : 1, // sin(theta); but avoid the pole
       q = a / r;
     real
-      q2 = Math::sq(q),
+      q2 = Math::_sq(q),
       uq = u * q,
-      uq2 = Math::sq(uq),
+      uq2 = Math::_sq(uq),
       tu = t / u;
     // Initialize outer sum
     real vc  = 0, vc2  = 0, vs  = 0, vs2  = 0;   // v [N + 1], v [N + 2]
@@ -307,7 +307,7 @@ namespace GeographicLib {
       u = r != 0 ? fmax(p / r, eps()) : 1, // sin(theta); but avoid the pole
       q = a / r;
     real
-      q2 = Math::sq(q),
+      q2 = Math::_sq(q),
       tu = t / u;
     CircularEngine circ(M, gradp, norm, a, r, u, t);
     int k[L];

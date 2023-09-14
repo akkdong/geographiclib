@@ -58,10 +58,10 @@ namespace GeographicLib {
     , _exact(exact)
     , _f1(1 - _f)
     , _e2(_f * (2 - _f))
-    , _ep2(_e2 / Math::sq(_f1)) // e2 / (1 - e2)
+    , _ep2(_e2 / Math::_sq(_f1)) // e2 / (1 - e2)
     , _n(_f / ( 2 - _f))
     , _b(_a * _f1)
-    , _c2((Math::sq(_a) + Math::sq(_b) *
+    , _c2((Math::_sq(_a) + Math::_sq(_b) *
            (_e2 == 0 ? 1 :
             Math::eatanhe(real(1), (_f < 0 ? -1 : 1) * sqrt(fabs(_e2))) / _e2))
           / 2) // authalic radius squared
@@ -245,8 +245,8 @@ namespace GeographicLib {
     }
 
     real
-      dn1 = sqrt(1 + _ep2 * Math::sq(sbet1)),
-      dn2 = sqrt(1 + _ep2 * Math::sq(sbet2));
+      dn1 = sqrt(1 + _ep2 * Math::_sq(sbet1)),
+      dn2 = sqrt(1 + _ep2 * Math::_sq(sbet2));
 
     real a12, sig12;
     // index zero element of this array is unused
@@ -332,7 +332,7 @@ namespace GeographicLib {
       if (sig12 >= 0) {
         // Short lines (InverseStart sets salp2, calp2, dnm)
         s12x = sig12 * _b * dnm;
-        m12x = Math::sq(dnm) * _b * sin(sig12 / dnm);
+        m12x = Math::_sq(dnm) * _b * sin(sig12 / dnm);
         if (outmask & GEODESICSCALE)
           M12 = M21 = cos(sig12 / dnm);
         a12 = sig12 / Math::degree();
@@ -450,10 +450,10 @@ namespace GeographicLib {
           // From Lambda12: tan(bet) = tan(sig) * cos(alp)
           ssig1 = sbet1, csig1 = calp1 * cbet1,
           ssig2 = sbet2, csig2 = calp2 * cbet2,
-          k2 = Math::sq(calp0) * _ep2,
+          k2 = Math::_sq(calp0) * _ep2,
           eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2),
           // Multiplier = a^2 * e^2 * cos(alpha0) * sin(alpha0).
-          A4 = Math::sq(_a) * calp0 * salp0 * _e2;
+          A4 = Math::_sq(_a) * calp0 * salp0 * _e2;
         Math::norm(ssig1, csig1);
         Math::norm(ssig2, csig2);
         C4f(eps, Ca);
@@ -612,15 +612,15 @@ namespace GeographicLib {
     // This solution is adapted from Geocentric::Reverse.
     real k;
     real
-      p = Math::sq(x),
-      q = Math::sq(y),
+      p = Math::_sq(x),
+      q = Math::_sq(y),
       r = (p + q - 1) / 6;
     if ( !(q == 0 && r <= 0) ) {
       real
         // Avoid possible division by zero when r = 0 by multiplying equations
         // for s and t by r^3 and r, resp.
         S = p * q / 4,            // S = r^3 * s
-        r2 = Math::sq(r),
+        r2 = Math::_sq(r),
         r3 = r * r2,
         // The discriminant of the quadratic equation for T3.  This is zero on
         // the evolute curve p^(1/3)+q^(1/3) = 1
@@ -644,13 +644,13 @@ namespace GeographicLib {
         u += 2 * r * cos(ang / 3);
       }
       real
-        v = sqrt(Math::sq(u) + q),    // guaranteed positive
+        v = sqrt(Math::_sq(u) + q),    // guaranteed positive
         // Avoid loss of accuracy when u < 0.
         uv = u < 0 ? q / (v - u) : u + v, // u+v, guaranteed positive
         w = (uv - q) / (2 * v);           // positive?
       // Rearrange expression for k to avoid loss of accuracy due to
       // subtraction.  Division by 0 not possible because uv > 0, w >= 0.
-      k = uv / (sqrt(uv + Math::sq(w)) + w);   // guaranteed positive
+      k = uv / (sqrt(uv + Math::_sq(w)) + w);   // guaranteed positive
     } else {               // q == 0 && r <= 0
       // y = 0 with |x| <= 1.  Handle this case directly.
       // for y small, positive root is k = abs(y)/sqrt(1-x^2)
@@ -682,10 +682,10 @@ namespace GeographicLib {
       cbet2 * lam12 < real(0.5);
     real somg12, comg12;
     if (shortline) {
-      real sbetm2 = Math::sq(sbet1 + sbet2);
+      real sbetm2 = Math::_sq(sbet1 + sbet2);
       // sin((bet1+bet2)/2)^2
       // =  (sbet1 + sbet2)^2 / ((sbet1 + sbet2)^2 + (cbet1 + cbet2)^2)
-      sbetm2 /= sbetm2 + Math::sq(cbet1 + cbet2);
+      sbetm2 /= sbetm2 + Math::_sq(cbet1 + cbet2);
       dnm = sqrt(1 + _ep2 * sbetm2);
       real omg12 = lam12 / (_f1 * dnm);
       somg12 = sin(omg12); comg12 = cos(omg12);
@@ -695,8 +695,8 @@ namespace GeographicLib {
 
     salp1 = cbet2 * somg12;
     calp1 = comg12 >= 0 ?
-      sbet12 + cbet2 * sbet1 * Math::sq(somg12) / (1 + comg12) :
-      sbet12a - cbet2 * sbet1 * Math::sq(somg12) / (1 - comg12);
+      sbet12 + cbet2 * sbet1 * Math::_sq(somg12) / (1 + comg12) :
+      sbet12a - cbet2 * sbet1 * Math::_sq(somg12) / (1 - comg12);
 
     real
       ssig12 = hypot(salp1, calp1),
@@ -706,13 +706,13 @@ namespace GeographicLib {
       // really short lines
       salp2 = cbet1 * somg12;
       calp2 = sbet12 - cbet1 * sbet2 *
-        (comg12 >= 0 ? Math::sq(somg12) / (1 + comg12) : 1 - comg12);
+        (comg12 >= 0 ? Math::_sq(somg12) / (1 + comg12) : 1 - comg12);
       Math::norm(salp2, calp2);
       // Set return value
       sig12 = atan2(ssig12, csig12);
     } else if (fabs(_n) > real(0.1) || // Skip astroid calc if too eccentric
                csig12 >= 0 ||
-               ssig12 >= 6 * fabs(_n) * Math::pi() * Math::sq(cbet1)) {
+               ssig12 >= 6 * fabs(_n) * Math::pi() * Math::_sq(cbet1)) {
       // Nothing to do, zeroth order spherical approximation is OK
     } else {
       // Scale lam12 and bet2 to x, y coordinate system where antipodal point
@@ -723,7 +723,7 @@ namespace GeographicLib {
         // x = dlong, y = dlat
         {
           real
-            k2 = Math::sq(sbet1) * _ep2,
+            k2 = Math::_sq(sbet1) * _ep2,
             eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2);
           lamscale = _f * cbet1 * A3f(eps) * Math::pi();
         }
@@ -745,7 +745,7 @@ namespace GeographicLib {
                 REDUCEDLENGTH, dummy, m12b, m0, dummy, dummy, Ca);
         x = -1 + m12b / (cbet1 * cbet2 * m0 * Math::pi());
         betscale = x < -real(0.01) ? sbet12a / x :
-          -_f * Math::sq(cbet1) * Math::pi();
+          -_f * Math::_sq(cbet1) * Math::pi();
         lamscale = betscale / cbet1;
         y = lam12x / lamscale;
       }
@@ -754,10 +754,10 @@ namespace GeographicLib {
         // strip near cut
         // Need real(x) here to cast away the volatility of x for min/max
         if (_f >= 0) {
-          salp1 = fmin(real(1), -x); calp1 = - sqrt(1 - Math::sq(salp1));
+          salp1 = fmin(real(1), -x); calp1 = - sqrt(1 - Math::_sq(salp1));
         } else {
           calp1 = fmax(real(x > -tol1_ ? 0 : -1), x);
-          salp1 = sqrt(1 - Math::sq(calp1));
+          salp1 = sqrt(1 - Math::_sq(calp1));
         }
       } else {
         // Estimate alp1, by solving the astroid problem.
@@ -800,7 +800,7 @@ namespace GeographicLib {
         somg12 = sin(omg12a); comg12 = -cos(omg12a);
         // Update spherical estimate of alp1 using omg12 instead of lam12
         salp1 = cbet2 * somg12;
-        calp1 = sbet12a - cbet2 * sbet1 * Math::sq(somg12) / (1 - comg12);
+        calp1 = sbet12a - cbet2 * sbet1 * Math::_sq(somg12) / (1 - comg12);
       }
     }
     // Sanity check on starting guess.  Backwards check allows NaN through.
@@ -853,7 +853,7 @@ namespace GeographicLib {
     // and subst for calp0 and rearrange to give (choose positive sqrt
     // to give alp2 in [0, pi/2]).
     calp2 = cbet2 != cbet1 || fabs(sbet2) != -sbet1 ?
-      sqrt(Math::sq(calp1 * cbet1) +
+      sqrt(Math::_sq(calp1 * cbet1) +
            (cbet1 < -sbet1 ?
             (cbet2 - cbet1) * (cbet1 + cbet2) :
             (sbet1 - sbet2) * (sbet1 + sbet2))) / cbet2 :
@@ -876,7 +876,7 @@ namespace GeographicLib {
     real eta = atan2(somg12 * clam120 - comg12 * slam120,
                      comg12 * clam120 + somg12 * slam120);
     real B312;
-    real k2 = Math::sq(calp0) * _ep2;
+    real k2 = Math::_sq(calp0) * _ep2;
     eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2);
     C3f(eps, Ca);
     B312 = (SinCosSeries(true, ssig2, csig2, Ca, nC3_-1) -
@@ -984,7 +984,7 @@ namespace GeographicLib {
     static_assert(sizeof(coeff) / sizeof(real) == nA1_/2 + 2,
                   "Coefficient array size mismatch in A1m1f");
     int m = nA1_/2;
-    real t = Math::polyval(m, coeff, Math::sq(eps)) / coeff[m + 1];
+    real t = Math::polyval(m, coeff, Math::_sq(eps)) / coeff[m + 1];
     return (t + eps) / (1 - eps);
   }
 
@@ -1082,7 +1082,7 @@ namespace GeographicLib {
                   (nC1_*nC1_ + 7*nC1_ - 2*(nC1_/2)) / 4,
                   "Coefficient array size mismatch in C1f");
     real
-      eps2 = Math::sq(eps),
+      eps2 = Math::_sq(eps),
       d = eps;
     int o = 0;
     for (int l = 1; l <= nC1_; ++l) { // l is index of C1p[l]
@@ -1188,7 +1188,7 @@ namespace GeographicLib {
                   (nC1p_*nC1p_ + 7*nC1p_ - 2*(nC1p_/2)) / 4,
                   "Coefficient array size mismatch in C1pf");
     real
-      eps2 = Math::sq(eps),
+      eps2 = Math::_sq(eps),
       d = eps;
     int o = 0;
     for (int l = 1; l <= nC1p_; ++l) { // l is index of C1p[l]
@@ -1229,7 +1229,7 @@ namespace GeographicLib {
     static_assert(sizeof(coeff) / sizeof(real) == nA2_/2 + 2,
                   "Coefficient array size mismatch in A2m1f");
     int m = nA2_/2;
-    real t = Math::polyval(m, coeff, Math::sq(eps)) / coeff[m + 1];
+    real t = Math::polyval(m, coeff, Math::_sq(eps)) / coeff[m + 1];
     return (t - eps) / (1 + eps);
   }
 
@@ -1327,7 +1327,7 @@ namespace GeographicLib {
                   (nC2_*nC2_ + 7*nC2_ - 2*(nC2_/2)) / 4,
                   "Coefficient array size mismatch in C2f");
     real
-      eps2 = Math::sq(eps),
+      eps2 = Math::_sq(eps),
       d = eps;
     int o = 0;
     for (int l = 1; l <= nC2_; ++l) { // l is index of C2[l]

@@ -170,7 +170,7 @@ namespace GeographicLib {
   }
 
   template<typename T> T Math::tand(T x) {
-    static const T overflow = 1 / sq(numeric_limits<T>::epsilon());
+    static const T overflow = 1 / _sq(numeric_limits<T>::epsilon());
     T s, c;
     sincosd(x, s, c);
     // http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1950.pdf
@@ -221,7 +221,7 @@ namespace GeographicLib {
     // min iterations = 1, max iterations = 2; mean = 1.95
     static const T tol = sqrt(numeric_limits<T>::epsilon()) / 10;
     static const T taumax = 2 / sqrt(numeric_limits<T>::epsilon());
-    T e2m = 1 - sq(es),
+    T e2m = 1 - _sq(es),
       // To lowest order in e^2, taup = (1 - e^2) * tau = _e2m * tau; so use
       // tau = taup/e2m as a starting guess. Only 1 iteration is needed for
       // |lat| < 3.35 deg, otherwise 2 iterations are needed.  If, instead, tau
@@ -238,7 +238,7 @@ namespace GeographicLib {
     if (!(fabs(tau) < taumax)) return tau; // handles +/-inf and nan
     for (int i = 0; i < numit || GEOGRAPHICLIB_PANIC; ++i) {
       T taupa = taupf(tau, es),
-        dtau = (taup - taupa) * (1 + e2m * sq(tau)) /
+        dtau = (taup - taupa) * (1 + e2m * _sq(tau)) /
         ( e2m * hypot(T(1), tau) * hypot(T(1), taupa) );
       tau += dtau;
       if (!(fabs(dtau) >= stol))

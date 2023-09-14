@@ -259,11 +259,11 @@ namespace GeographicLib {
     H = hypot(Bx, By);
     Ht = H != 0 ? (Bx * Bxt + By * Byt) / H : hypot(Bxt, Byt);
     D = H != 0 ? Math::atan2d(Bx, By) : Math::atan2d(Bxt, Byt);
-    Dt = (H != 0 ? (By * Bxt - Bx * Byt) / Math::sq(H) : 0) / Math::degree();
+    Dt = (H != 0 ? (By * Bxt - Bx * Byt) / Math::_sq(H) : 0) / Math::degree();
     F = hypot(H, Bz);
     Ft = F != 0 ? (H * Ht + Bz * Bzt) / F : hypot(Ht, Bzt);
     I = F != 0 ? Math::atan2d(-Bz, H) : Math::atan2d(-Bzt, Ht);
-    It = (F != 0 ? (Bz * Ht - H * Bzt) / Math::sq(F) : 0) / Math::degree();
+    It = (F != 0 ? (Bz * Ht - H * Bzt) / Math::_sq(F) : 0) / Math::degree();
   }
 
   string MagneticModel::DefaultMagneticPath() {

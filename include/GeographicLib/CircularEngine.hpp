@@ -85,7 +85,7 @@ namespace GeographicLib {
       {
         _q = _a / _r;
         _uq = _u * _q;
-        _uq2 = Math::sq(_uq);
+        _uq2 = Math::_sq(_uq);
       }
 
     void SetCoeff(int m, real wc, real ws)

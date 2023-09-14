@@ -122,7 +122,7 @@ namespace GeographicLib {
       t = xn - yn;
       s += mul * t * t;
     }
-    return (Math::sq( (x0 + y0)/2 ) - s) * Math::pi() / (2 * (xn + yn));
+    return (Math::_sq( (x0 + y0)/2 ) - s) * Math::pi() / (2 * (xn + yn));
   }
 
   Math::real EllipticFunction::RJ(real x, real y, real z, real p) {
@@ -148,7 +148,7 @@ namespace GeographicLib {
       real
         lam = sqrt(x0)*sqrt(y0) + sqrt(y0)*sqrt(z0) + sqrt(z0)*sqrt(x0),
         d0 = (sqrt(p0)+sqrt(x0)) * (sqrt(p0)+sqrt(y0)) * (sqrt(p0)+sqrt(z0)),
-        e0 = delta/(mul3 * Math::sq(d0));
+        e0 = delta/(mul3 * Math::_sq(d0));
       s += RC(1, 1 + e0)/(mul * d0);
       An = (An + lam)/4;
       x0 = (x0 + lam)/4;
@@ -238,7 +238,7 @@ namespace GeographicLib {
     _kp2 = kp2;
     _alpha2 = alpha2;
     _alphap2 = alphap2;
-    _eps = _k2/Math::sq(sqrt(_kp2) + 1);
+    _eps = _k2/Math::_sq(sqrt(_kp2) + 1);
     // Values of complete elliptic integrals for k = 0,1 and alpha = 0,1
     //         K     E     D
     // k = 0:  pi/2  pi/2  pi/4
@@ -372,7 +372,7 @@ namespace GeographicLib {
     }
   }
 
-  Math::real EllipticFunction::F(real sn, real cn, real dn) const {
+  Math::real EllipticFunction::FF(real sn, real cn, real dn) const {
     // Carlson, eq. 4.5 and
     // https://dlmf.nist.gov/19.25.E5
     real cn2 = cn*cn, dn2 = dn*dn,
@@ -463,7 +463,7 @@ namespace GeographicLib {
   Math::real EllipticFunction::deltaF(real sn, real cn, real dn) const {
     // Function is periodic with period pi
     if (signbit(cn)) { cn = -cn; sn = -sn; }
-    return F(sn, cn, dn) * (Math::pi()/2) / K() - atan2(sn, cn);
+    return FF(sn, cn, dn) * (Math::pi()/2) / K() - atan2(sn, cn);
   }
 
   Math::real EllipticFunction::deltaE(real sn, real cn, real dn) const {
@@ -496,9 +496,9 @@ namespace GeographicLib {
     return H(sn, cn, dn) * (Math::pi()/2) / H() - atan2(sn, cn);
   }
 
-  Math::real EllipticFunction::F(real phi) const {
+  Math::real EllipticFunction::FF(real phi) const {
     real sn = sin(phi), cn = cos(phi), dn = Delta(sn, cn);
-    return fabs(phi) < Math::pi() ? F(sn, cn, dn) :
+    return fabs(phi) < Math::pi() ? FF(sn, cn, dn) :
       (deltaF(sn, cn, dn) + phi) * K() / (Math::pi()/2);
   }
 

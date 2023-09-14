@@ -267,7 +267,7 @@ namespace GeographicLib {
                   (maxpow_ * (maxpow_ + 3))/2,
                   "Coefficient array size mismatch for bet");
     int m = maxpow_/2;
-    _b1 = Math::polyval(m, b1coeff, Math::sq(_n)) / (b1coeff[m + 1] * (1+_n));
+    _b1 = Math::polyval(m, b1coeff, Math::_sq(_n)) / (b1coeff[m + 1] * (1+_n));
     // _a1 is the equivalent radius for computing the circumference of
     // ellipse.
     _a1 = _b1 * _a;
@@ -417,7 +417,7 @@ namespace GeographicLib {
       // This form has cancelling errors.  This property is lost if cosh(psip)
       // is replaced by 1/cos(phi), even though it's using "primary" data (phi
       // instead of psip).
-      k = sqrt(_e2m + _e2 * Math::sq(cphi)) * hypot(real(1), tau)
+      k = sqrt(_e2m + _e2 * Math::_sq(cphi)) * hypot(real(1), tau)
         / hypot(taup, clam);
     } else {
       xip = Math::pi()/2;
@@ -588,7 +588,7 @@ namespace GeographicLib {
       gamma += Math::atan2d(sxip * tanh(etap), c); // Krueger p 19 (31)
       lat = Math::atand(tau);
       // Note cos(phi') * cosh(eta') = r
-      k *= sqrt(_e2m + _e2 / (1 + Math::sq(tau))) *
+      k *= sqrt(_e2m + _e2 / (1 + Math::_sq(tau))) *
         hypot(real(1), tau) * r;
     } else {
       lat = Math::qd;

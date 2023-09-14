@@ -100,7 +100,7 @@ namespace GeographicLib {
     static real Dsn(real x, real y, real sx, real sy) {
       // sx = x/hyp(x)
       real t = x * y;
-      return t > 0 ? (x + y) * Math::sq( (sx * sy)/t ) / (sx + sy) :
+      return t > 0 ? (x + y) * Math::_sq( (sx * sy)/t ) / (sx + sy) :
         (x - y != 0 ? (sx - sy) / (x - y) : 1);
     }
     // Datanhee(x,y) = (atanee(x)-atanee(y))/(x-y)

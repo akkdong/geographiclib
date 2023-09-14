@@ -20,8 +20,8 @@ namespace GeographicLib {
 
   AlbersEqualArea::AlbersEqualArea(real a, real f, real stdlat, real k0)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
-    , epsx2_(Math::sq(epsx_))
+    , epsx_(Math::_sq(eps_))
+    , epsx2_(Math::_sq(epsx_))
     , tol_(sqrt(eps_))
     , tol0_(tol_ * sqrt(sqrt(eps_)))
     , _a(a)
@@ -50,8 +50,8 @@ namespace GeographicLib {
   AlbersEqualArea::AlbersEqualArea(real a, real f, real stdlat1, real stdlat2,
                                    real k1)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
-    , epsx2_(Math::sq(epsx_))
+    , epsx_(Math::_sq(eps_))
+    , epsx2_(Math::_sq(epsx_))
     , tol_(sqrt(eps_))
     , tol0_(tol_ * sqrt(sqrt(eps_)))
     , _a(a)
@@ -88,8 +88,8 @@ namespace GeographicLib {
                                    real sinlat2, real coslat2,
                                    real k1)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
-    , epsx2_(Math::sq(epsx_))
+    , epsx_(Math::_sq(eps_))
+    , epsx2_(Math::_sq(epsx_))
     , tol_(sqrt(eps_))
     , tol0_(tol_ * sqrt(sqrt(eps_)))
     , _a(a)
@@ -175,12 +175,12 @@ namespace GeographicLib {
       C = 1;                    // ignored
     } else {
       real
-        tbet1 = _fm * tphi1, scbet12 = 1 + Math::sq(tbet1),
-        tbet2 = _fm * tphi2, scbet22 = 1 + Math::sq(tbet2),
+        tbet1 = _fm * tphi1, scbet12 = 1 + Math::_sq(tbet1),
+        tbet2 = _fm * tphi2, scbet22 = 1 + Math::_sq(tbet2),
         txi1 = txif(tphi1), cxi1 = 1/hyp(txi1), sxi1 = txi1 * cxi1,
         txi2 = txif(tphi2), cxi2 = 1/hyp(txi2), sxi2 = txi2 * cxi2,
         dtbet2 = _fm * (tbet1 + tbet2),
-        es1 = 1 - _e2 * Math::sq(sphi1), es2 = 1 - _e2 * Math::sq(sphi2),
+        es1 = 1 - _e2 * Math::_sq(sphi1), es2 = 1 - _e2 * Math::_sq(sphi2),
         /*
         dsxi = ( (_e2 * sq(sphi2 + sphi1) + es2 + es1) / (2 * es2 * es1) +
                  Datanhee(sphi2, sphi1) ) * Dsn(tphi2, tphi1, sphi2, sphi1) /
@@ -198,14 +198,14 @@ namespace GeographicLib {
         //   sq(scbet)*(1-sxi) = sq(scbet)*(1-sphi) * (1-sxi)/(1-sphi)
         sm1 = -Dsn(tphi2, tphi1, sphi2, sphi1) *
         ( -( ((sphi2 <= 0 ? (1 - sxi2) / (1 - sphi2) :
-               Math::sq(cxi2/cphi2) * (1 + sphi2) / (1 + sxi2)) +
+               Math::_sq(cxi2/cphi2) * (1 + sphi2) / (1 + sxi2)) +
               (sphi1 <= 0 ? (1 - sxi1) / (1 - sphi1) :
-               Math::sq(cxi1/cphi1) * (1 + sphi1) / (1 + sxi1))) ) *
+               Math::_sq(cxi1/cphi1) * (1 + sphi1) / (1 + sxi1))) ) *
           (1 + _e2 * (sphi1 + sphi2 + sphi1 * sphi2)) /
           (1 +       (sphi1 + sphi2 + sphi1 * sphi2)) +
           (scbet22 * (sphi2 <= 0 ? 1 - sphi2 :
-                      Math::sq(cphi2) / ( 1 + sphi2)) +
-           scbet12 * (sphi1 <= 0 ? 1 - sphi1 : Math::sq(cphi1) / ( 1 + sphi1)))
+                      Math::_sq(cphi2) / ( 1 + sphi2)) +
+           scbet12 * (sphi1 <= 0 ? 1 - sphi1 : Math::_sq(cphi1) / ( 1 + sphi1)))
           * (_e2 * (1 + sphi1 + sphi2 + _e2 * sphi1 * sphi2)/(es1 * es2)
           +_e2m * DDatanhee(sphi1, sphi2) ) / _qZ ) / den;
       // C = (scbet22*sxi2 - scbet12*sxi1) / (scbet22 * scbet12 * (sx2 - sx1))
@@ -246,25 +246,25 @@ namespace GeographicLib {
         //                 ((1-e2)*(1-e2*sphi0^2)^2)
 
         real
-          scphi02 = 1 + Math::sq(tphi0), scphi0 = sqrt(scphi02),
+          scphi02 = 1 + Math::_sq(tphi0), scphi0 = sqrt(scphi02),
           // sphi0m = 1-sin(phi0) = 1/( sec(phi0) * (tan(phi0) + sec(phi0)) )
           sphi0 = tphi0 / scphi0, sphi0m = 1/(scphi0 * (tphi0 + scphi0)),
           // scbet0^2 * sphi0
-          g = (1 + Math::sq( _fm * tphi0 )) * sphi0,
+          g = (1 + Math::_sq( _fm * tphi0 )) * sphi0,
           // dg/dsphi0 = dg/dtphi0 * scphi0^3
-          dg = _e2m * scphi02 * (1 + 2 * Math::sq(tphi0)) + _e2,
+          dg = _e2m * scphi02 * (1 + 2 * Math::_sq(tphi0)) + _e2,
           D = sphi0m * (1 - _e2*(1 + 2*sphi0*(1+sphi0))) / (_e2m * (1+sphi0)),
           // dD/dsphi0
-          dD = -2 * (1 - _e2*Math::sq(sphi0) * (2*sphi0+3)) /
-               (_e2m * Math::sq(1+sphi0)),
-          A = -_e2 * Math::sq(sphi0m) * (2+(1+_e2)*sphi0) /
-              (_e2m*(1-_e2*Math::sq(sphi0))),
+          dD = -2 * (1 - _e2*Math::_sq(sphi0) * (2*sphi0+3)) /
+               (_e2m * Math::_sq(1+sphi0)),
+          A = -_e2 * Math::_sq(sphi0m) * (2+(1+_e2)*sphi0) /
+              (_e2m*(1-_e2*Math::_sq(sphi0))),
           B = (sphi0m * _e2m / (1 - _e2*sphi0) *
                (atanhxm1(_e2 *
-                         Math::sq(sphi0m / (1-_e2*sphi0))) - _e2*sphi0m/_e2m)),
+                         Math::_sq(sphi0m / (1-_e2*sphi0))) - _e2*sphi0m/_e2m)),
           // d(A+B)/dsphi0
-          dAB = (2 * _e2 * (2 - _e2 * (1 + Math::sq(sphi0))) /
-                 (_e2m * Math::sq(1 - _e2*Math::sq(sphi0)) * scphi02)),
+          dAB = (2 * _e2 * (2 - _e2 * (1 + Math::_sq(sphi0))) /
+                 (_e2m * Math::_sq(1 - _e2*Math::_sq(sphi0)) * scphi02)),
           u = sm1 * g - s/_qZ * ( D - g * (A + B) ),
           // du/dsphi0
           du = sm1 * dg - s/_qZ * (dD - dg * (A + B) - g * dAB),
@@ -276,10 +276,10 @@ namespace GeographicLib {
     }
     _txi0 = txif(tphi0); _scxi0 = hyp(_txi0); _sxi0 = _txi0 / _scxi0;
     _n0 = tphi0/hyp(tphi0);
-    _m02 = 1 / (1 + Math::sq(_fm * tphi0));
+    _m02 = 1 / (1 + Math::_sq(_fm * tphi0));
     _nrho0 = polar ? 0 : _a * sqrt(_m02);
     _k0 = sqrt(tphi1 == tphi2 ? 1 : C / (_m02 + _n0 * _qZ * _sxi0)) * k1;
-    _k2 = Math::sq(_k0);
+    _k2 = Math::_sq(_k0);
     _lat0 = _sign * atan(tphi0)/Math::degree();
   }
 
@@ -320,7 +320,7 @@ namespace GeographicLib {
     //
     // This function maintains odd parity
     real
-      cphi = 1 / sqrt(1 + Math::sq(tphi)),
+      cphi = 1 / sqrt(1 + Math::_sq(tphi)),
       sphi = tphi * cphi,
       es1 = _e2 * sphi,
       es2m1 = 1 - es1 * sphi,   // 1 - e2 * sphi^2
@@ -339,11 +339,11 @@ namespace GeographicLib {
       // dtxi/dtphi = (scxi/scphi)^3 * 2*(1-e^2)/(qZ*(1-e^2*sphi^2)^2)
       real
         txia = txif(tphi),
-        tphi2 = Math::sq(tphi),
+        tphi2 = Math::_sq(tphi),
         scphi2 = 1 + tphi2,
-        scterm = scphi2/(1 + Math::sq(txia)),
+        scterm = scphi2/(1 + Math::_sq(txia)),
         dtphi = (txi - txia) * scterm * sqrt(scterm) *
-        _qx * Math::sq(1 - _e2 * tphi2 / scphi2);
+        _qx * Math::_sq(1 - _e2 * tphi2 / scphi2);
       tphi += dtphi;
       if (!(fabs(dtphi) >= stol))
         break;
@@ -463,7 +463,7 @@ namespace GeographicLib {
     //   2*(2*e/(1-e2)*dx)^m
     //
     // So use series if (2*e/(1-e2)*dx) is sufficiently small
-    real s, dx = 1 - x, dy = 1 - y, xy = 1, yy = 1, ee = _e2 / Math::sq(_e2m);
+    real s, dx = 1 - x, dy = 1 - y, xy = 1, yy = 1, ee = _e2 / Math::_sq(_e2m);
     s = ee;
     for (int m = 1; ; ++m) {
        real c = m + 2, t = c;
@@ -509,7 +509,7 @@ namespace GeographicLib {
     x = t * (_n0 != 0 ? stheta / _n0 : _k2 * lam) / _k0;
     y = (_nrho0 *
          (_n0 != 0 ?
-          (ctheta < 0 ? 1 - ctheta : Math::sq(stheta)/(1 + ctheta)) / _n0 :
+          (ctheta < 0 ? 1 - ctheta : Math::_sq(stheta)/(1 + ctheta)) / _n0 :
           0)
          - drho * ctheta) / _k0;
     k = _k0 * (t != 0 ? t * hyp(_fm * tphi) / _a : 1);
@@ -527,7 +527,7 @@ namespace GeographicLib {
       drho = den != 0 ? (_k0*x*nx - 2*_k0*y*_nrho0 + _k0*y*ny) / den : 0,
       // dsxia = scxi0 * dsxi
       dsxia = - _scxi0 * (2 * _nrho0 + _n0 * drho) * drho /
-              (Math::sq(_a) * _qZ),
+              (Math::_sq(_a) * _qZ),
       txi = (_txi0 + dsxia) / sqrt(fmax(1 - dsxia * (2*_txi0 + dsxia), epsx2_)),
       tphi = tphif(txi),
       theta = atan2(nx, y1),
@@ -550,7 +550,7 @@ namespace GeographicLib {
     Forward(0, lat, 0, x, y, gamma, kold);
     k /= kold;
     _k0 *= k;
-    _k2 = Math::sq(_k0);
+    _k2 = Math::_sq(_k0);
   }
 
 } // namespace GeographicLib

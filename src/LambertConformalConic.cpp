@@ -21,7 +21,7 @@ namespace GeographicLib {
   LambertConformalConic::LambertConformalConic(real a, real f,
                                                real stdlat, real k0)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
+    , epsx_(Math::_sq(eps_))
     , ahypover_(Math::digits() * log(real(numeric_limits<real>::radix)) + 2)
     , _a(a)
     , _f(f)
@@ -47,7 +47,7 @@ namespace GeographicLib {
                                                real stdlat1, real stdlat2,
                                                real k1)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
+    , epsx_(Math::_sq(eps_))
     , ahypover_(Math::digits() * log(real(numeric_limits<real>::radix)) + 2)
     , _a(a)
     , _f(f)
@@ -80,7 +80,7 @@ namespace GeographicLib {
                                                real sinlat2, real coslat2,
                                                real k1)
     : eps_(numeric_limits<real>::epsilon())
-    , epsx_(Math::sq(eps_))
+    , epsx_(Math::_sq(eps_))
     , ahypover_(Math::digits() * log(real(numeric_limits<real>::radix)) + 2)
     , _a(a)
     , _f(f)
@@ -165,8 +165,8 @@ namespace GeographicLib {
       psi1 = asinh(tchi1);
     if (tphi2 - tphi1 != 0) {
       // Db(tphi2, tphi1)
-      real num = Dlog1p(Math::sq(tbet2)/(1 + scbet2),
-                        Math::sq(tbet1)/(1 + scbet1))
+      real num = Dlog1p(Math::_sq(tbet2)/(1 + scbet2),
+                        Math::_sq(tbet1)/(1 + scbet1))
         * Dhyp(tbet2, tbet1, scbet2, scbet1) * _fm;
       // Dc(tphi2, tphi1)
       real den = Dasinh(tphi2, tphi1, scphi2, scphi1)
@@ -197,9 +197,9 @@ namespace GeographicLib {
           real
             // s1 = (scbet1 - scchi1) * (scbet1 + scchi1)
             s1 = (tphi1 * (2 * shxi1 * chxi1 * scphi1 - _e2 * tphi1) -
-                  Math::sq(shxi1) * (1 + 2 * Math::sq(tphi1))),
+                  Math::_sq(shxi1) * (1 + 2 * Math::_sq(tphi1))),
             s2 = (tphi2 * (2 * shxi2 * chxi2 * scphi2 - _e2 * tphi2) -
-                  Math::sq(shxi2) * (1 + 2 * Math::sq(tphi2))),
+                  Math::_sq(shxi2) * (1 + 2 * Math::_sq(tphi2))),
             // t1 = scbet1 - tchi1
             t1 = tchi1 < 0 ? scbet1 - tchi1 : (s1 + 1)/(scbet1 + tchi1),
             t2 = tchi2 < 0 ? scbet2 - tchi2 : (s2 + 1)/(scbet2 + tchi2),
@@ -307,13 +307,13 @@ namespace GeographicLib {
     _scale = _a * k1 / scbet1 *
       // exp(n * psi1) = exp(- (1 - n) * psi1) * exp(psi1)
       // with (1-n) = nc^2/(1+n) and exp(-psi1) = scchi1 + tchi1
-      exp( - (Math::sq(_nc)/(1 + _n)) * psi1 )
+      exp( - (Math::_sq(_nc)/(1 + _n)) * psi1 )
       * (tchi1 >= 0 ? scchi1 + tchi1 : 1 / (scchi1 - tchi1));
     // Scale at phi0 = k0 = k1 * (scbet0*exp(-n*psi0))/(scbet1*exp(-n*psi1))
     //                    = k1 * scbet0/scbet1 * exp(n * (psi1 - psi0))
     // psi1 - psi0 = Dasinh(tchi1, tchi0) * (tchi1 - tchi0)
     _k0 = k1 * (_scbet0/scbet1) *
-      exp( - (Math::sq(_nc)/(1 + _n)) *
+      exp( - (Math::_sq(_nc)/(1 + _n)) *
            Dasinh(tchi1, _tchi0, scchi1, _scchi0) * (tchi1 - _tchi0))
       * (tchi1 >= 0 ? scchi1 + tchi1 : 1 / (scchi1 - tchi1)) /
       (_scchi0 + _tchi0);
@@ -328,7 +328,7 @@ namespace GeographicLib {
         psi = asinh(tchi),
         dpsi = Dasinh(tchi, _tchi0, scchi, _scchi0) * (tchi - _tchi0);
       _drhomax = - _scale * (2 * _nc < 1 && dpsi != 0 ?
-                             (exp(Math::sq(_nc)/(1 + _n) * psi ) *
+                             (exp(Math::_sq(_nc)/(1 + _n) * psi ) *
                               (tchi > 0 ? 1/(scchi + tchi) : (scchi - tchi))
                               - (_t0nm1 + 1))/(-_n) :
                              Dexp(-_n * psi, -_n * _psi0) * dpsi);
@@ -368,17 +368,17 @@ namespace GeographicLib {
       theta = _n * lam, stheta = sin(theta), ctheta = cos(theta),
       dpsi = Dasinh(tchi, _tchi0, scchi, _scchi0) * (tchi - _tchi0),
       drho = - _scale * (2 * _nc < 1 && dpsi != 0 ?
-                         (exp(Math::sq(_nc)/(1 + _n) * psi ) *
+                         (exp(Math::_sq(_nc)/(1 + _n) * psi ) *
                           (tchi > 0 ? 1/(scchi + tchi) : (scchi - tchi))
                           - (_t0nm1 + 1))/(-_n) :
                          Dexp(-_n * psi, -_n * _psi0) * dpsi);
     x = (_nrho0 + _n * drho) * (_n != 0 ? stheta / _n : lam);
     y = _nrho0 *
       (_n != 0 ?
-       (ctheta < 0 ? 1 - ctheta : Math::sq(stheta)/(1 + ctheta)) / _n : 0)
+       (ctheta < 0 ? 1 - ctheta : Math::_sq(stheta)/(1 + ctheta)) / _n : 0)
       - drho * ctheta;
     k = _k0 * (scbet/_scbet0) /
-      (exp( - (Math::sq(_nc)/(1 + _n)) * dpsi )
+      (exp( - (Math::_sq(_nc)/(1 + _n)) * dpsi )
        * (tchi >= 0 ? scchi + tchi : 1 / (scchi - tchi)) / (_scchi0 + _tchi0));
     y *= _sign;
     gamma = _sign * theta / Math::degree();
@@ -432,7 +432,7 @@ namespace GeographicLib {
       // cosh(log(tn)) = (tn + 1/tn)/2; sinh(log(tn)) = (tn - 1/tn)/2
       real
         tn = tnm1 + 1 == 0 ? epsx_ : tnm1 + 1,
-        sh = sinh( -Math::sq(_nc)/(_n * (1 + _n)) *
+        sh = sinh( -Math::_sq(_nc)/(_n * (1 + _n)) *
                    (2 * tn > 1 ? log1p(tnm1) : log(tn)) );
       tchi = sh * (tn + 1/tn)/2 - hyp(sh) * (tnm1 * (tn + 1)/tn)/2;
     }
@@ -447,7 +447,7 @@ namespace GeographicLib {
     lon = lam / Math::degree();
     lon = Math::AngNormalize(lon + Math::AngNormalize(lon0));
     k = _k0 * (scbet/_scbet0) /
-      (exp(_nc != 0 ? - (Math::sq(_nc)/(1 + _n)) * dpsi : 0)
+      (exp(_nc != 0 ? - (Math::_sq(_nc)/(1 + _n)) * dpsi : 0)
        * (tchi >= 0 ? scchi + tchi : 1 / (scchi - tchi)) / (_scchi0 + _tchi0));
     gamma /= _sign * Math::degree();
   }

@@ -279,7 +279,7 @@ namespace GeographicLib {
      *   F(\phi, k) = \int_0^\phi \frac1{\sqrt{1-k^2\sin^2\theta}}\,d\theta.
      * \f]
      **********************************************************************/
-    Math::real F(real phi) const;
+    Math::real FF(real phi) const;
 
     /**
      * The incomplete integral of the second kind.
@@ -410,7 +410,7 @@ namespace GeographicLib {
      *   sin<sup>2</sup>&phi;).
      * @return \e F(&phi;, \e k) as though &phi; &isin; (&minus;&pi;, &pi;].
      **********************************************************************/
-    Math::real F(real sn, real cn, real dn) const;
+    Math::real FF(real sn, real cn, real dn) const;
 
     /**
      * The incomplete integral of the second kind in terms of Jacobi elliptic

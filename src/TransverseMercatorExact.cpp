@@ -93,10 +93,10 @@ namespace GeographicLib {
     //         asinh(_e * snu / sqrt(_mu * cnu^2 + _mv * cnv^2))
     // Overflow value s.t. atan(overflow) = pi/2
     static const real
-      overflow = 1 / Math::sq(numeric_limits<real>::epsilon());
+      overflow = 1 / Math::_sq(numeric_limits<real>::epsilon());
     real
-      d1 = sqrt(Math::sq(cnu) + _mv * Math::sq(snu * snv)),
-      d2 = sqrt(_mu * Math::sq(cnu) + _mv * Math::sq(cnv)),
+      d1 = sqrt(Math::_sq(cnu) + _mv * Math::_sq(snu * snv)),
+      d2 = sqrt(_mu * Math::_sq(cnu) + _mv * Math::_sq(cnv)),
       t1 = (d1 != 0 ? snu * dnv / d1 : (signbit(snu) ? -overflow : overflow)),
       t2 = (d2 != 0 ? sinh( _e * asinh(_e * snu / d2) ) :
             (signbit(snu) ? -overflow : overflow));
@@ -115,9 +115,9 @@ namespace GeographicLib {
                                         real& du, real& dv) const {
     // Lee 54.21 but write (1 - dnu^2 * snv^2) = (cnv^2 + _mu * snu^2 * snv^2)
     // (see A+S 16.21.4)
-    real d = _mv * Math::sq(Math::sq(cnv) + _mu * Math::sq(snu * snv));
-    du =  cnu * dnu * dnv * (Math::sq(cnv) - _mu * Math::sq(snu * snv)) / d;
-    dv = -snu * snv * cnv * (Math::sq(dnu * dnv) + _mu * Math::sq(cnu)) / d;
+    real d = _mv * Math::_sq(Math::_sq(cnv) + _mu * Math::_sq(snu * snv));
+    du =  cnu * dnu * dnv * (Math::_sq(cnv) - _mu * Math::_sq(snu * snv)) / d;
+    dv = -snu * snv * cnv * (Math::_sq(dnu * dnv) + _mu * Math::_sq(cnu)) / d;
   }
 
   // Starting point for zetainv
@@ -193,7 +193,7 @@ namespace GeographicLib {
       scal = 1/hypot(real(1), taup);
     if (zetainv0(psi, lam, u, v))
       return;
-    real stol2 = tol2_ / Math::sq(fmax(psi, real(1)));
+    real stol2 = tol2_ / Math::_sq(fmax(psi, real(1)));
     // min iterations = 2, max iterations = 6; mean = 4.0
     for (int i = 0, trip = 0; i < numit_ || GEOGRAPHICLIB_PANIC; ++i) {
       real snu, cnu, dnu, snv, cnv, dnv;
@@ -212,7 +212,7 @@ namespace GeographicLib {
       v -= delv;
       if (trip)
         break;
-      real delw2 = Math::sq(delu) + Math::sq(delv);
+      real delw2 = Math::_sq(delu) + Math::_sq(delv);
       if (!(delw2 >= stol2))
         ++trip;
     }
@@ -223,7 +223,7 @@ namespace GeographicLib {
                                       real& xi, real& eta) const {
     // Lee 55.4 writing
     // dnu^2 + dnv^2 - 1 = _mu * cnu^2 + _mv * cnv^2
-    real d = _mu * Math::sq(cnu) + _mv * Math::sq(cnv);
+    real d = _mu * Math::_sq(cnu) + _mv * Math::_sq(cnv);
     xi = _eEu.E(snu, cnu, dnu) - _mu * snu * cnu * dnu / d;
     eta = v - _eEv.E(snv, cnv, dnv) + _mv * snv * cnv * dnv / d;
   }
@@ -235,11 +235,11 @@ namespace GeographicLib {
                                          real& du, real& dv) const {
     // Reciprocal of 55.9: dw/ds = dn(w)^2/_mv, expanding complex dn(w) using
     // A+S 16.21.4
-    real d = _mv * Math::sq(Math::sq(cnv) + _mu * Math::sq(snu * snv));
+    real d = _mv * Math::_sq(Math::_sq(cnv) + _mu * Math::_sq(snu * snv));
     real
       dnr = dnu * cnv * dnv,
       dni = - _mu * snu * cnu * snv;
-    du = (Math::sq(dnr) - Math::sq(dni)) / d;
+    du = (Math::_sq(dnr) - Math::_sq(dni)) / d;
     dv = 2 * dnr * dni / d;
   }
 
@@ -256,7 +256,7 @@ namespace GeographicLib {
       real
         x = xi - _eEu.E(),
         y = eta - _eEv.KE(),
-        r2 = Math::sq(x) + Math::sq(y);
+        r2 = Math::_sq(x) + Math::_sq(y);
       u = _eEu.K() + x/r2;
       v = _eEv.K() - y/r2;
     } else if ((eta > real(0.75) * _eEv.KE() && xi < real(0.25) * _eEu.E())
@@ -315,7 +315,7 @@ namespace GeographicLib {
       v -= delv;
       if (trip)
         break;
-      real delw2 = Math::sq(delu) + Math::sq(delv);
+      real delw2 = Math::_sq(delu) + Math::_sq(delv);
       if (!(delw2 >= tol2_))
         ++trip;
     }
@@ -325,7 +325,7 @@ namespace GeographicLib {
                                       real snu, real cnu, real dnu,
                                       real snv, real cnv, real dnv,
                                       real& gamma, real& k) const {
-    real sec2 = 1 + Math::sq(tau);    // sec(phi)^2
+    real sec2 = 1 + Math::_sq(tau);    // sec(phi)^2
     // Lee 55.12 -- negated for our sign convention.  gamma gives the bearing
     // (clockwise from true north) of grid north
     gamma = atan2(_mv * snu * snv * cnv, cnu * dnu * dnv);
@@ -343,8 +343,8 @@ namespace GeographicLib {
     //
     //    _mv + _mu * c^2 instead of 1 - _mu * sin(phi)^2
     k = sqrt(_mv + _mu / sec2) * sqrt(sec2) *
-      sqrt( (_mv * Math::sq(snv) + Math::sq(cnu * dnv)) /
-            (_mu * Math::sq(cnu) + _mv * Math::sq(cnv)) );
+      sqrt( (_mv * Math::_sq(snv) + Math::_sq(cnu * dnv)) /
+            (_mu * Math::_sq(cnu) + _mv * Math::_sq(cnv)) );
   }
 
   void TransverseMercatorExact::Forward(real lon0, real lat, real lon,

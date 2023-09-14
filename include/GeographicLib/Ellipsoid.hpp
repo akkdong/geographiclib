@@ -89,7 +89,7 @@ namespace GeographicLib {
      *   a sphere with the same volume is cbrt(\e V / (4&pi;/3)).
      **********************************************************************/
     Math::real Volume() const
-    { return (4 * Math::pi()) * Math::sq(_a) * _b / 3; }
+    { return (4 * Math::pi()) * Math::_sq(_a) * _b / 3; }
     ///@}
 
     /** \name %Ellipsoid shape
@@ -479,7 +479,7 @@ namespace GeographicLib {
      * The returned value <i>e'</i> <sup>2</sup> lies in (&minus;1, &infin;).
      **********************************************************************/
     static Math::real FlatteningToSecondEccentricitySq(real f)
-    { return f * (2 - f) / Math::sq(1 - f); }
+    { return f * (2 - f) / Math::_sq(1 - f); }
 
     /**
      * @param[in] epp2 = <i>e''</i> <sup>2</sup> = (<i>a</i><sup>2</sup>
@@ -505,7 +505,7 @@ namespace GeographicLib {
      * The returned value <i>e''</i> <sup>2</sup> lies in (&minus;1, 1).
      **********************************************************************/
     static Math::real FlatteningToThirdEccentricitySq(real f)
-    { return f * (2 - f) / (1 + Math::sq(1 - f)); }
+    { return f * (2 - f) / (1 + Math::_sq(1 - f)); }
 
     ///@}
 

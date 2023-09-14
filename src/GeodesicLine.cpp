@@ -59,7 +59,7 @@ namespace GeographicLib {
     Math::sincosd(Math::AngRound(_lat1), sbet1, cbet1); sbet1 *= _f1;
     // Ensure cbet1 = +epsilon at poles
     Math::norm(sbet1, cbet1); cbet1 = fmax(tiny_, cbet1);
-    _dn1 = sqrt(1 + g._ep2 * Math::sq(sbet1));
+    _dn1 = sqrt(1 + g._ep2 * Math::_sq(sbet1));
 
     // Evaluate alp0 from sin(alp1) * cos(bet1) = sin(alp0),
     _salp0 = _salp1 * cbet1; // alp0 in [0, pi/2 - |bet1|]
@@ -87,7 +87,7 @@ namespace GeographicLib {
       return;
     }
 
-    _k2 = Math::sq(_calp0) * g._ep2;
+    _k2 = Math::_sq(_calp0) * g._ep2;
     real eps = _k2 / (2 * (1 + sqrt(1 + _k2)) + _k2);
 
     if (_caps & CAP_C1) {
@@ -120,7 +120,7 @@ namespace GeographicLib {
     if (_caps & CAP_C4) {
       g.C4f(eps, _cC4a);
       // Multiplier = a^2 * e^2 * cos(alpha0) * sin(alpha0)
-      _aA4 = Math::sq(_a) * _calp0 * _salp0 * g._e2;
+      _aA4 = Math::_sq(_a) * _calp0 * _salp0 * g._e2;
       _bB41 = Geodesic::SinCosSeries(false, _ssig1, _csig1, _cC4a, nC4_);
     }
 
@@ -206,7 +206,7 @@ namespace GeographicLib {
           csig2 = _csig1 * csig12 - _ssig1 * ssig12;
         B12 = Geodesic::SinCosSeries(true, ssig2, csig2, _cC1a, nC1_);
         real serr = (1 + _aA1m1) * (sig12 + (B12 - _bB11)) - s12_a12 / _b;
-        sig12 = sig12 - serr / sqrt(1 + _k2 * Math::sq(ssig2));
+        sig12 = sig12 - serr / sqrt(1 + _k2 * Math::_sq(ssig2));
         ssig12 = sin(sig12); csig12 = cos(sig12);
         // Update B12 below
       }
@@ -216,7 +216,7 @@ namespace GeographicLib {
     // sig2 = sig1 + sig12
     ssig2 = _ssig1 * csig12 + _csig1 * ssig12;
     csig2 = _csig1 * csig12 - _ssig1 * ssig12;
-    real dn2 = sqrt(1 + _k2 * Math::sq(ssig2));
+    real dn2 = sqrt(1 + _k2 * Math::_sq(ssig2));
     if (outmask & (DISTANCE | REDUCEDLENGTH | GEODESICSCALE)) {
       if (arcmode || fabs(_f) > 0.01)
         B12 = Geodesic::SinCosSeries(true, ssig2, csig2, _cC1a, nC1_);
@@ -305,7 +305,7 @@ namespace GeographicLib {
         salp12 = _calp0 * _salp0 *
           (csig12 <= 0 ? _csig1 * (1 - csig12) + ssig12 * _ssig1 :
            ssig12 * (_csig1 * ssig12 / (1 + csig12) + _ssig1));
-        calp12 = Math::sq(_salp0) + Math::sq(_calp0) * _csig1 * csig2;
+        calp12 = Math::_sq(_salp0) + Math::_sq(_calp0) * _csig1 * csig2;
       }
       S12 = _c2 * atan2(salp12, calp12) + _aA4 * (B42 - _bB41);
     }

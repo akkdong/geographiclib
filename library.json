@@ -1,0 +1,20 @@
+{
+    "name": "GeoGraphicLib",
+    "keywords": "geo",
+    "description": "GeographicLib is a small C++ library for geodesic and rhumb line calculations, ...",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/akkdong/GeoGraphicLib.git"
+    },
+    "authors":
+    {
+        "name": "Charles Karney",
+        "url": "karney@alum.mit.edu",
+        "maintainer": false
+    },
+    "version": "2.3.0",
+    "license": "MIT",
+    "frameworks": "arduino",
+    "platforms": "*"
+}

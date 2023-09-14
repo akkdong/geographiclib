@@ -61,8 +61,8 @@ namespace GeographicLib {
     Math::sincosd(Math::AngRound(_lat1), sbet1, cbet1); sbet1 *= _f1;
     // Ensure cbet1 = +epsilon at poles
     Math::norm(sbet1, cbet1); cbet1 = fmax(tiny_, cbet1);
-    _dn1 = (_f >= 0 ? sqrt(1 + g._ep2 * Math::sq(sbet1)) :
-            sqrt(1 - _e2 * Math::sq(cbet1)) / _f1);
+    _dn1 = (_f >= 0 ? sqrt(1 + g._ep2 * Math::_sq(sbet1)) :
+            sqrt(1 - _e2 * Math::_sq(cbet1)) / _f1);
 
     // Evaluate alp0 from sin(alp1) * cos(bet1) = sin(alp0),
     _salp0 = _salp1 * cbet1; // alp0 in [0, pi/2 - |bet1|]
@@ -86,7 +86,7 @@ namespace GeographicLib {
     // Math::norm(_somg1, _comg1); -- don't need to normalize!
     // Math::norm(_schi1, _cchi1); -- don't need to normalize!
 
-    _k2 = Math::sq(_calp0) * g._ep2;
+    _k2 = Math::_sq(_calp0) * g._ep2;
     _eE.Reset(-_k2, -g._ep2, 1 + _k2, 1 + g._ep2);
 
     if (_caps & CAP_E) {
@@ -112,7 +112,7 @@ namespace GeographicLib {
 
     if (_caps & CAP_C4) {
       // Multiplier = a^2 * e^2 * cos(alpha0) * sin(alpha0)
-      _aA4 = Math::sq(_a) * _calp0 * _salp0 * _e2;
+      _aA4 = Math::_sq(_a) * _calp0 * _salp0 * _e2;
       if (_aA4 == 0)
         _bB41 = 0;
       else {
@@ -266,7 +266,7 @@ namespace GeographicLib {
         salp12 = _calp0 * _salp0 *
           (csig12 <= 0 ? _csig1 * (1 - csig12) + ssig12 * _ssig1 :
            ssig12 * (_csig1 * ssig12 / (1 + csig12) + _ssig1));
-        calp12 = Math::sq(_salp0) + Math::sq(_calp0) * _csig1 * csig2;
+        calp12 = Math::_sq(_salp0) + Math::_sq(_calp0) * _csig1 * csig2;
       }
       S12 = _c2 * atan2(salp12, calp12) + _aA4 * (B42 - _bB41);
     }

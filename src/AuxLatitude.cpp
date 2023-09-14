@@ -137,7 +137,7 @@ namespace GeographicLib {
       real cphi = phi.normalized().x(), tphi = phi.tan();
       if (!isinf(tphi)) {
         cmu = mu.x(); cbeta = beta.x();
-        *diff = _fm1 * b/mr * Math::sq(cbeta / cmu) * (cbeta / cphi);
+        *diff = _fm1 * b/mr * Math::_sq(cbeta / cmu) * (cbeta / cphi);
       } else
         *diff = _fm1 * mr/a;
     }
@@ -217,7 +217,7 @@ namespace GeographicLib {
         real cbeta = Parametric(phi).normalized().x(),
           cxi = xi.normalized().x();
         *diff =
-          (2/_q) * Math::sq(cbeta / cxi) * (cbeta / cxi) * (cbeta / phin.x());
+          (2/_q) * Math::_sq(cbeta / cxi) * (cbeta / cxi) * (cbeta / phin.x());
       } else
         *diff = _e2m1 * sqrt(_q/2);
     }
@@ -331,7 +331,7 @@ namespace GeographicLib {
 
   Math::real AuxLatitude::RectifyingRadius(bool exact) const {
     if (exact) {
-      return EllipticFunction::RG(Math::sq(_a), Math::sq(_b)) * 4 / Math::pi();
+      return EllipticFunction::RG(Math::_sq(_a), Math::_sq(_b)) * 4 / Math::pi();
     } else {
       // Maxima code for these coefficients:
       // df[i]:=if i<0 then df[i+2]/(i+2) else i!!$
@@ -358,7 +358,7 @@ namespace GeographicLib {
 
   Math::real AuxLatitude::AuthalicRadiusSquared(bool exact) const {
     if (exact) {
-      return Math::sq(_b) * _q / 2;
+      return Math::_sq(_b) * _q / 2;
     } else {
       // Using a * (a + b) / 2 as the multiplying factor leads to a rapidly
       // converging series in n.  Of course, using this series isn't really
@@ -420,7 +420,7 @@ namespace GeographicLib {
       // This branch is not reached; this case is open-coded in Authalic.
       return (_q - q(tphi)) / d;
     else if (d == 0)
-      return 2 / Math::sq(_e2m1);
+      return 2 / Math::_sq(_e2m1);
     else {
       // General expression for Dq(1, sphi) is
       // atanh(e * d / (1 - e2 * sphi)) / (e * d) +

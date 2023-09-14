@@ -202,7 +202,7 @@ namespace GeographicLib {
      * @param[in] x
      * @return <i>x</i><sup>2</sup>.
      **********************************************************************/
-    template<typename T> static T sq(T x)
+    template<typename T> static T _sq(T x)
     { return x * x; }
 
     /**
